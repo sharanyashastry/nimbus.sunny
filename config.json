@@ -1,0 +1,16 @@
+{
+    "documentId": "310ed3fc5ebfb9137564ab01",
+    "assemblyName": "URDF",
+    "outputFormat": "urdf",
+    "drawFrames": false,
+    "drawCollisions": false,
+    "useScads": true,
+    "noDynamics": false,
+    
+    "mergeSTLs": "all",
+    "simplifySTLs": "no",
+    "maxSTLSize": 3,
+
+    "jointMaxEffort": 120,
+    "jointMaxVelocity": 23.8
+}
