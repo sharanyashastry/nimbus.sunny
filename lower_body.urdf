@@ -1,346 +1,346 @@
+<?xml version="1.0"?>
 <robot name="onshape">
-<link name="pelvis">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/pelvis_visual.obj"/>
-</geometry>
-<material name="pelvis_material">
-<color rgba="0.62532029905725461383 0.81645820502085475479 0.93089392232856704723 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/pelvis_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-0.059926348514177954496 -3.5610200680893003136e-17 0.24382720253258152732" rpy="0 0 0"/>
-<mass value="26.987682948015642381" />
-<inertia ixx="0.83289256765053432119" ixy="3.1892774563517368547e-07"  ixz="0.00052931993668545586178" iyy="0.60676978629744049432" iyz="1.9081958235744878039e-17" izz="0.28953844474350470817" />
-</inertial>
-</link>
+  <link name="pelvis">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/pelvis_visual.obj"/>
+      </geometry>
+      <material name="pelvis_material">
+        <color rgba="0.62532029905725461383 0.81645820502085475479 0.93089392232856704723 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/pelvis_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.059926348514177954496 -3.5610200680893003136e-17 0.24382720253258152732" rpy="0 0 0"/>
+      <mass value="26.987682948015642381" />
+      <inertia ixx="0.83289256765053432119" ixy="3.1892774563517368547e-07"  ixz="0.00052931993668545586178" iyy="0.60676978629744049432" iyz="1.9081958235744878039e-17" izz="0.28953844474350470817" />
+    </inertial>
+  </link>
 
-<link name="hip_pitch">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_visual.obj"/>
-</geometry>
-<material name="hip_pitch_material">
-<color rgba="0.73185158112174653056 0.81392767005015786985 0.8604379901161185451 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="0.06264690243961958116 -2.9039129212797180842e-05 -0.056649373065881004907" rpy="0 0 0"/>
-<mass value="1.2186205403912051537" />
-<inertia ixx="0.0017922324187806854164" ixy="2.0344409172977058653e-06"  ixz="0.00090153156749171346404" iyy="0.0048390333141667442318" iyz="4.3388181338293928448e-07" izz="0.2354407488127324144" />
-</inertial>
-</link>
+  <link name="hip_pitch">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_visual.obj"/>
+      </geometry>
+      <material name="hip_pitch_material">
+        <color rgba="0.73185158112174653056 0.81392767005015786985 0.8604379901161185451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.06264690243961958116 -2.9039129212797180842e-05 -0.056649373065881004907" rpy="0 0 0"/>
+      <mass value="1.2186205403912051537" />
+      <inertia ixx="0.12" ixy="2.0344409172977058653e-06"  ixz="0.00090153156749171346404" iyy="0.13" iyz="4.3388181338293928448e-07" izz="0.11" />
+    </inertial>
+  </link>
 
-<link name="hip_roll">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_visual.obj"/>
-</geometry>
-<material name="hip_roll_material">
-<color rgba="0.68639636760624267442 0.80885216598202025473 0.91513154554738251889 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-4.600904063047769405e-05 0.0023700541052265509077 -0.062009288232252768314" rpy="0 0 0"/>
-<mass value="1.0036949262519998527" />
-<inertia ixx="0.0011470463843653239469" ixy="-1.3656674854689924101e-06"  ixz="-8.7266717099951512649e-07" iyy="0.0013964732079962973409" iyz="-3.3294113408689886096e-05" izz="0.23201735474994211739" />
-</inertial>
-</link>
+  <link name="hip_roll">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_visual.obj"/>
+      </geometry>
+      <material name="hip_roll_material">
+        <color rgba="0.68639636760624267442 0.80885216598202025473 0.91513154554738251889 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-4.600904063047769405e-05 0.0023700541052265509077 -0.062009288232252768314" rpy="0 0 0"/>
+      <mass value="1.0036949262519998527" />
+      <inertia ixx="0.12" ixy="-1.3656674854689924101e-06"  ixz="-8.7266717099951512649e-07" iyy="0.13" iyz="-3.3294113408689886096e-05" izz="0.11" />
+    </inertial>
+  </link>
 
-<link name="upper_leg">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_visual.obj"/>
-</geometry>
-<material name="upper_leg_material">
-<color rgba="0.8509746851951229818 0.74215485188645069492 0.56968403348327723013 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="1.2169508815199493428e-07 -0.00010242104306716834903 -0.12593596303035636819" rpy="0 0 0"/>
-<mass value="2.8517725769667174873" />
-<inertia ixx="0.027882730332081467894" ixy="-2.615454533586426231e-09"  ixz="-5.6953524560907943519e-06" iyy="0.032306672343541127657" iyz="-4.0533003869232252269e-05" izz="0.23910712056671595827" />
-</inertial>
-</link>
+  <link name="upper_leg">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_visual.obj"/>
+      </geometry>
+      <material name="upper_leg_material">
+        <color rgba="0.8509746851951229818 0.74215485188645069492 0.56968403348327723013 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="1.2169508815199493428e-07 -0.00010242104306716834903 -0.12593596303035636819" rpy="0 0 0"/>
+      <mass value="2.8517725769667174873" />
+      <inertia ixx="0.14" ixy="-2.615454533586426231e-09"  ixz="-5.6953524560907943519e-06" iyy="0.15" iyz="-4.0533003869232252269e-05" izz="0.13" />
+    </inertial>
+  </link>
 
-<link name="lower_leg">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_visual.obj"/>
-</geometry>
-<material name="lower_leg_material">
-<color rgba="0.49805154997170436593 0.49807210711408739234 0.49808444139951718599 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-0.0018854782981295029661 0.17714467231641864431 -0.035423701558162594416" rpy="0 0 0"/>
-<mass value="0.95382143937668972811" />
-<inertia ixx="0.019254947045508889747" ixy="-0.00018042886589993183599"  ixz="-9.38700194887034917e-06" iyy="0.00061215497400824965893" iyz="-0.00024345951815343201382" izz="0.25037486691392585314" />
-</inertial>
-</link>
+  <link name="lower_leg">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_visual.obj"/>
+      </geometry>
+      <material name="lower_leg_material">
+        <color rgba="0.49805154997170436593 0.49807210711408739234 0.49808444139951718599 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.0018854782981295029661 0.17714467231641864431 -0.035423701558162594416" rpy="0 0 0"/>
+      <mass value="0.95382143937668972811" />
+      <inertia ixx="0.13" ixy="-0.00018042886589993183599"  ixz="-9.38700194887034917e-06" iyy="0.14" iyz="-0.00024345951815343201382" izz="0.12" />
+    </inertial>
+  </link>
 
-<link name="foot">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_visual.obj"/>
-</geometry>
-<material name="foot_material">
-<color rgba="0.76296916064842934535 0.86340935426862419622 0.92367347044074110674 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-0.023695230851708652675 0.054130161814016475308 -0.014144494510189380837" rpy="0 0 0"/>
-<mass value="0.67935904313279926736" />
-<inertia ixx="0.00092154952612908140521" ixy="0.00037594983838428586544"  ixz="5.7551499311897592382e-06" iyy="0.0028361004870479968043" iyz="-2.9314216224694187588e-06" izz="0.23432304108435325629" />
-</inertial>
-</link>
+  <link name="foot">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_visual.obj"/>
+      </geometry>
+      <material name="foot_material">
+        <color rgba="0.76296916064842934535 0.86340935426862419622 0.92367347044074110674 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.023695230851708652675 0.054130161814016475308 -0.014144494510189380837" rpy="0 0 0"/>
+      <mass value="0.67935904313279926736" />
+      <inertia ixx="0.12" ixy="0.00037594983838428586544"  ixz="5.7551499311897592382e-06" iyy="0.13" iyz="-2.9314216224694187588e-06" izz="0.11" />
+    </inertial>
+  </link>
 
-<joint name="R_ankle" type="revolute">
-<origin xyz="-2.7755575615628913511e-17 0.40000000000000229816 -0.02000000000000010103" rpy="-4.4717316339075486302e-16 2.1450168939924776738e-17 -1.110223024580866931e-16" />
-<parent link="lower_leg" />
-<child link="foot" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-1.0471975511965976313" upper="0.43633231299858238339"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="R_ankle" type="revolute">
+    <origin xyz="-2.7755575615628913511e-17 0.40000000000000229816 -0.02000000000000010103" rpy="-4.4717316339075486302e-16 2.1450168939924776738e-17 -1.110223024580866931e-16" />
+    <parent link="lower_leg" />
+    <child link="foot" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-1.0471975511965976313" upper="0.43633231299858238339"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="R_knee" type="revolute">
-<origin xyz="-0.034000000000000002442 1.1796119636642288242e-16 -0.39030000000000003579" rpy="-1.570796326794896558 -2.1704860131417916548e-14 1.57079632679489678" />
-<parent link="upper_leg" />
-<child link="lower_leg" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-2.356194490192344837" upper="0"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="R_knee" type="revolute">
+    <origin xyz="-0.034000000000000002442 1.1796119636642288242e-16 -0.39030000000000003579" rpy="-1.570796326794896558 -2.1704860131417916548e-14 1.57079632679489678" />
+    <parent link="upper_leg" />
+    <child link="lower_leg" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-2.356194490192344837" upper="0"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="R_hip_yaw" type="revolute">
-<origin xyz="0 0.03069999999999989404 -0.061999999999999978739" rpy="1.570796326794896558 -3.1530333899353865146e-14 5.5511151231574739564e-17" />
-<parent link="hip_roll" />
-<child link="upper_leg" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="R_hip_yaw" type="revolute">
+    <origin xyz="0 0.03069999999999989404 -0.061999999999999978739" rpy="1.570796326794896558 -3.1530333899353865146e-14 5.5511151231574739564e-17" />
+    <parent link="hip_roll" />
+    <child link="upper_leg" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="R_hip_roll" type="revolute">
-<origin xyz="0.061999999999999992617 3.4694469519536141888e-18 -0.069000000000000019651" rpy="-3.141592653589793116 -1.5707963267948930053 0" />
-<parent link="hip_pitch" />
-<child link="hip_roll" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-0.1745329251994329478" upper="1.0471975511965976313"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="R_hip_roll" type="revolute">
+    <origin xyz="0.061999999999999992617 3.4694469519536141888e-18 -0.069000000000000019651" rpy="-3.141592653589793116 -1.5707963267948930053 0" />
+    <parent link="hip_pitch" />
+    <child link="hip_roll" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-0.1745329251994329478" upper="1.0471975511965976313"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="R_hip_pitch" type="revolute">
-<origin xyz="-0.05900000000000000383 -0.062400000000000011013 -0.022499999999999992228" rpy="1.570796326794896558 -1.8873791418627657243e-15 -3.1415926535897895633" />
-<parent link="pelvis" />
-<child link="hip_pitch" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-2.1816615649929120835" upper="0.61086523819801530344"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="R_hip_pitch" type="revolute">
+    <origin xyz="-0.05900000000000000383 -0.062400000000000011013 -0.022499999999999992228" rpy="1.570796326794896558 -1.8873791418627657243e-15 -3.1415926535897895633" />
+    <parent link="pelvis" />
+    <child link="hip_pitch" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-2.1816615649929120835" upper="0.61086523819801530344"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<link name="hip_pitch_2">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_2_visual.obj"/>
-</geometry>
-<material name="hip_pitch_2_material">
-<color rgba="0.73185158112174653056 0.81392767005015786985 0.8604379901161185451 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_2_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="0.062646902439619414626 -2.9039129212794361916e-05 -0.056649373065881018785" rpy="0 0 0"/>
-<mass value="1.2186205403912051537" />
-<inertia ixx="0.0017922324187806606965" ixy="2.0344409172897064861e-06"  ixz="0.00090153156749170641673" iyy="0.0048390333141667138742" iyz="4.3388181338343273411e-07" izz="0.23544074881272750166" />
-</inertial>
-</link>
+  <link name="hip_pitch_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_2_visual.obj"/>
+      </geometry>
+      <material name="hip_pitch_2_material">
+        <color rgba="0.73185158112174653056 0.81392767005015786985 0.8604379901161185451 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_2_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.062646902439619414626 -2.9039129212794361916e-05 -0.056649373065881018785" rpy="0 0 0"/>
+      <mass value="1.2186205403912051537" />
+      <inertia ixx="0.12" ixy="2.0344409172897064861e-06"  ixz="0.00090153156749170641673" iyy="0.13" iyz="4.3388181338343273411e-07" izz="0.11" />
+    </inertial>
+  </link>
 
-<link name="hip_roll_2">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_2_visual.obj"/>
-</geometry>
-<material name="hip_roll_2_material">
-<color rgba="0.68639636760624267442 0.80885216598202025473 0.91513154554738251889 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_2_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-4.6009040630453102989e-05 0.0023700541052264221045 -0.062009288232252775253" rpy="0 0 0"/>
-<mass value="1.0036949262519998527" />
-<inertia ixx="0.0011470463843653347889" ixy="-1.3656674854690025745e-06"  ixz="-8.7266717099952963193e-07" iyy="0.0013964732079963112187" iyz="-3.32941134086995626e-05" izz="0.23201735474994561459" />
-</inertial>
-</link>
+  <link name="hip_roll_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_2_visual.obj"/>
+      </geometry>
+      <material name="hip_roll_2_material">
+        <color rgba="0.68639636760624267442 0.80885216598202025473 0.91513154554738251889 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_2_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-4.6009040630453102989e-05 0.0023700541052264221045 -0.062009288232252775253" rpy="0 0 0"/>
+      <mass value="1.0036949262519998527" />
+      <inertia ixx="0.12" ixy="-1.3656674854690025745e-06"  ixz="-8.7266717099952963193e-07" iyy="0.13" iyz="-3.32941134086995626e-05" izz="0.11" />
+    </inertial>
+  </link>
 
-<link name="upper_leg_2">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_2_visual.obj"/>
-</geometry>
-<material name="upper_leg_2_material">
-<color rgba="0.8509746851951229818 0.74215485188645069492 0.56968403348327723013 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_2_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="1.216950881592945054e-07 -0.0001024210430671724961 -0.12593596303035636819" rpy="0 0 0"/>
-<mass value="2.8517725769667174873" />
-<inertia ixx="0.027882730332081464425" ixy="-2.6154545366744965984e-09"  ixz="-5.6953524560933964371e-06" iyy="0.032306672343541134595" iyz="-4.0533003869231798259e-05" izz="0.23910712056671595827" />
-</inertial>
-</link>
+  <link name="upper_leg_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_2_visual.obj"/>
+      </geometry>
+      <material name="upper_leg_2_material">
+        <color rgba="0.8509746851951229818 0.74215485188645069492 0.56968403348327723013 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_2_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="1.216950881592945054e-07 -0.0001024210430671724961 -0.12593596303035636819" rpy="0 0 0"/>
+      <mass value="2.8517725769667174873" />
+      <inertia ixx="0.14" ixy="-2.6154545366744965984e-09"  ixz="-5.6953524560933964371e-06" iyy="0.15" iyz="-4.0533003869231798259e-05" izz="0.13" />
+    </inertial>
+  </link>
 
-<link name="lower_leg_2">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_2_visual.obj"/>
-</geometry>
-<material name="lower_leg_2_material">
-<color rgba="0.49805154997170436593 0.49807210711408739234 0.49808444139951718599 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_2_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-0.0018854782981303119978 0.1771446723164160908 -0.035423701558160068659" rpy="0 0 0"/>
-<mass value="0.95382143937668972811" />
-<inertia ixx="0.019254947045508237491" ixy="-0.00018042886589992915259"  ixz="-9.3870019489552286476e-06" iyy="0.00061215497400823166117" iyz="-0.00024345951815341707893" izz="0.25037486691391880322" />
-</inertial>
-</link>
+  <link name="lower_leg_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_2_visual.obj"/>
+      </geometry>
+      <material name="lower_leg_2_material">
+        <color rgba="0.49805154997170436593 0.49807210711408739234 0.49808444139951718599 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_2_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.0018854782981303119978 0.1771446723164160908 -0.035423701558160068659" rpy="0 0 0"/>
+      <mass value="0.95382143937668972811" />
+      <inertia ixx="0.13" ixy="-0.00018042886589992915259"  ixz="-9.3870019489552286476e-06" iyy="0.14" iyz="-0.00024345951815341707893" izz="0.12" />
+    </inertial>
+  </link>
 
-<link name="foot_2">
-<visual>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_2_visual.obj"/>
-</geometry>
-<material name="foot_2_material">
-<color rgba="0.76296916064842934535 0.86340935426862419622 0.92367347044074110674 1.0"/>
-</material>
-</visual>
-<collision>
-<origin xyz="0 0 0" rpy="0 -0 0" />
-<geometry>
-<mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_2_collision.obj"/>
-</geometry>
-</collision>
-<inertial>
-<origin xyz="-0.023695230851708735942 0.054130161814016808375 -0.014144494510189451961" rpy="0 0 0"/>
-<mass value="0.67935904313279926736" />
-<inertia ixx="0.0009215495261290840073" ixy="0.00037594983838428662438"  ixz="5.7551499311896084664e-06" iyy="0.0028361004870480115495" iyz="-2.9314216224699549307e-06" izz="0.23432304108434834355" />
-</inertial>
-</link>
+  <link name="foot_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_2_visual.obj"/>
+      </geometry>
+      <material name="foot_2_material">
+        <color rgba="0.76296916064842934535 0.86340935426862419622 0.92367347044074110674 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_2_collision.obj"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.023695230851708735942 0.054130161814016808375 -0.014144494510189451961" rpy="0 0 0"/>
+      <mass value="0.67935904313279926736" />
+      <inertia ixx="0.12" ixy="0.00037594983838428662438"  ixz="5.7551499311896084664e-06" iyy="0.13" iyz="-2.9314216224699549307e-06" izz="0.11" />
+    </inertial>
+  </link>
 
-<joint name="L_ankle" type="revolute">
-<origin xyz="-1.8873791418627661187e-15 0.39999999999999413802 -0.019999999999995327071" rpy="2.1451975998011550152e-14 8.104628079762191241e-15 -1.8082757514969442743e-14" />
-<parent link="lower_leg_2" />
-<child link="foot_2" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-1.0471975511965976313" upper="0.43633231299858238339"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="L_ankle" type="revolute">
+    <origin xyz="-1.8873791418627661187e-15 0.39999999999999413802 -0.019999999999995327071" rpy="2.1451975998011550152e-14 8.104628079762191241e-15 -1.8082757514969442743e-14" />
+    <parent link="lower_leg_2" />
+    <child link="foot_2" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-1.0471975511965976313" upper="0.43633231299858238339"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="L_knee" type="revolute">
-<origin xyz="-0.034000000000000002442 1.1796119636642288242e-16 -0.3903000000000000913" rpy="-1.570796326794896558 4.2743586448068329591e-15 1.5707963267949047736" />
-<parent link="upper_leg_2" />
-<child link="lower_leg_2" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-2.356194490192344837" upper="0"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="L_knee" type="revolute">
+    <origin xyz="-0.034000000000000002442 1.1796119636642288242e-16 -0.3903000000000000913" rpy="-1.570796326794896558 4.2743586448068329591e-15 1.5707963267949047736" />
+    <parent link="upper_leg_2" />
+    <child link="lower_leg_2" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-2.356194490192344837" upper="0"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="L_hip_yaw" type="revolute">
-<origin xyz="2.7755575615628913511e-17 0.030699999999999963429 -0.061999999999999985678" rpy="1.570796326794896558 -3.1469101559397065552e-14 5.5511151231126851459e-17" />
-<parent link="hip_roll_2" />
-<child link="upper_leg_2" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="L_hip_yaw" type="revolute">
+    <origin xyz="2.7755575615628913511e-17 0.030699999999999963429 -0.061999999999999985678" rpy="1.570796326794896558 -3.1469101559397065552e-14 5.5511151231126851459e-17" />
+    <parent link="hip_roll_2" />
+    <child link="upper_leg_2" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="L_hip_roll" type="revolute">
-<origin xyz="0.062000000000000186906 1.3877787807814456755e-17 -0.069000000000000061284" rpy="2.0954117794914131481e-30 1.5707963267948823471 0" />
-<parent link="hip_pitch_2" />
-<child link="hip_roll_2" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-1.0471975511965976313" upper="0.1745329251994329478"/>
-<joint_properties friction="0.0"/>
-</joint>
+  <joint name="L_hip_roll" type="revolute">
+    <origin xyz="0.062000000000000186906 1.3877787807814456755e-17 -0.069000000000000061284" rpy="2.0954117794914131481e-30 1.5707963267948823471 0" />
+    <parent link="hip_pitch_2" />
+    <child link="hip_roll_2" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-1.0471975511965976313" upper="0.1745329251994329478"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
-<joint name="L_hip_pitch" type="revolute">
-<origin xyz="-0.059000000000000010769 0.062399999999999997136 -0.022499999999999992228" rpy="-1.570796326794896558 7.6605388699134444448e-15 3.1415926535897789051" />
-<parent link="pelvis" />
-<child link="hip_pitch_2" />
-<axis xyz="0 0 1"/>
-<limit effort="120" velocity="23.800000000000000711" lower="-0.61086523819801530344" upper="2.1816615649929120835"/>
-<joint_properties friction="0.0"/>
-</joint>
-
+  <joint name="L_hip_pitch" type="revolute">
+    <origin xyz="-0.059000000000000010769 0.062399999999999997136 -0.022499999999999992228" rpy="-1.570796326794896558 7.6605388699134444448e-15 3.1415926535897789051" />
+    <parent link="pelvis" />
+    <child link="hip_pitch_2" />
+    <axis xyz="0 0 1"/>
+    <limit effort="120" velocity="23.800000000000000711" lower="-0.61086523819801530344" upper="2.1816615649929120835"/>
+    <joint_properties friction="0.0"/>
+  </joint>
 
 </robot>
