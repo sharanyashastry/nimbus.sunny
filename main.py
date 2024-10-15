@@ -39,9 +39,9 @@ def main():
     builder = DiagramBuilder()
     plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0)  # Continuous model
     
-    robot_url = "/home/sankaet/drake_projects/sunny/lower_body.urdf"
+    robot_url = "file://drake_models/home/kyle/nimbus.sunny/lower_body.urdf"
     parser = Parser(plant)
-    parser.AddModels(robot_url)
+    parser.AddModelsFromUrl(robot_url)
     
     add_ground(plant, soft_contact=True)  # Implement soft contact in add_ground function
     plant.Finalize()
@@ -70,54 +70,54 @@ def main():
     # Set initial joint positions
     q0 = plant.GetPositions(plant_context)
     # Adjust these values based on your robot's joint configuration
-    q0[7:11] = [0, 0, -0.5, 1.0]  # Left leg joints
-    q0[11:15] = [0, 0, -0.5, 1.0]  # Right leg joints
+    q0[7:12] = [-0.25, 0, 0, -0.65, 0.4]  # Left leg
+    q0[12:] = [0.25, 0, 0, -0.65, 0.4]  # Right leg
     plant.SetPositions(plant_context, q0)
 
     # Gradual initial pose setting
     pelvis = plant.GetBodyByName("pelvis")
     t = 0
     dt = 0.01
-    while t < 2.0:
-        pose = initial_pose_trajectory.value(t)
-        position = pose[:3].flatten()  # Flatten to ensure it's a 1D array
-        quat_wxyz = pose[3:].flatten()  # Flatten and reorder for Quaternion constructor
-        quaternion = Quaternion(quat_wxyz[0], quat_wxyz[1], quat_wxyz[2], quat_wxyz[3])
-        R = RotationMatrix(quaternion)
-        X_WP = RigidTransform(R, position)
-        plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
-        simulator.AdvanceTo(t)
-        t += dt
+    pose = initial_pose_trajectory.value(t)
+    position = pose[:3].flatten()  # Flatten to ensure it's a 1D array
+    quat_wxyz = pose[3:].flatten()  # Flatten and reorder for Quaternion constructor
+    quaternion = Quaternion(quat_wxyz[0], quat_wxyz[1], quat_wxyz[2], quat_wxyz[3])
+    R = RotationMatrix(quaternion)
+    X_WP = RigidTransform(R, position)
+    plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
 
-    # Main simulation loop
-    simulation_time = 12.0  # Total simulation time including initial pose
+    # # Main simulation loop
+    simulation_time = 1.5  # Total simulation time including initial pose
+    meshcat.StartRecording()
     while context.get_time() < simulation_time:
         t = context.get_time()
+        print(t)
         
-        left_foot, right_foot = gait_planner.get_foot_positions(t - 2.0)
+        # left_foot, right_foot = gait_planner.get_foot_positions(t - 2.0)
         
-        left_leg_angles = ik_solver.solve(*left_foot)
-        right_leg_angles = ik_solver.solve(*right_foot)
+        # left_leg_angles = ik_solver.solve(*left_foot)
+        # right_leg_angles = ik_solver.solve(*right_foot)
         
-        current_com = com_calculator.calculate_com(plant_context)
-        desired_com = np.array([0, 0, initial_height])
-        com_correction = balance_controller.compute_correction(desired_com, current_com, dt)
+        # current_com = com_calculator.calculate_com(plant_context)
+        # desired_com = np.array([0, 0, initial_height])
+        # com_correction = balance_controller.compute_correction(desired_com, current_com, dt)
         
-        all_positions = plant.GetPositions(plant_context)
-        all_positions[7:11] = left_leg_angles
-        all_positions[11:15] = right_leg_angles
-        plant.SetPositions(plant_context, all_positions)
+        # all_positions = plant.GetPositions(plant_context)
+        # all_positions[7:11] = left_leg_angles
+        # all_positions[11:15] = right_leg_angles
+        # plant.SetPositions(plant_context, all_positions)
         
-        X_WP = plant.GetFreeBodyPose(plant_context, pelvis)
-        new_translation = X_WP.translation() + com_correction
-        X_WP.set_translation(new_translation)
-        plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
+        # X_WP = plant.GetFreeBodyPose(plant_context, pelvis)
+        # new_translation = X_WP.translation() + com_correction
+        # X_WP.set_translation(new_translation)
+        # plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
         
         simulator.AdvanceTo(t + dt)
 
     print("Simulation complete. Meshcat URL:")
     print(meshcat.web_url())
     
+    meshcat.PublishRecording()
     input("Press Enter to exit...")
 
 if __name__ == "__main__":

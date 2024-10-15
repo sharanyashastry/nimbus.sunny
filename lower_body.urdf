@@ -4,7 +4,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/pelvis_visual.obj"/>
+        <mesh filename="objects/pelvis_visual.obj"/>
       </geometry>
       <material name="pelvis_material">
         <color rgba="0.62532029905725461383 0.81645820502085475479 0.93089392232856704723 1.0"/>
@@ -13,7 +13,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/pelvis_collision.obj"/>
+        <mesh filename="objects/pelvis_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -27,7 +27,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_visual.obj"/>
+        <mesh filename="objects/hip_pitch_visual.obj"/>
       </geometry>
       <material name="hip_pitch_material">
         <color rgba="0.73185158112174653056 0.81392767005015786985 0.8604379901161185451 1.0"/>
@@ -36,7 +36,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_collision.obj"/>
+        <mesh filename="objects/hip_pitch_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -50,7 +50,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_visual.obj"/>
+        <mesh filename="objects/hip_roll_visual.obj"/>
       </geometry>
       <material name="hip_roll_material">
         <color rgba="0.68639636760624267442 0.80885216598202025473 0.91513154554738251889 1.0"/>
@@ -59,7 +59,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_collision.obj"/>
+        <mesh filename="objects/hip_roll_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -73,7 +73,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_visual.obj"/>
+        <mesh filename="objects/upper_leg_visual.obj"/>
       </geometry>
       <material name="upper_leg_material">
         <color rgba="0.8509746851951229818 0.74215485188645069492 0.56968403348327723013 1.0"/>
@@ -82,7 +82,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_collision.obj"/>
+        <mesh filename="objects/upper_leg_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -96,7 +96,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_visual.obj"/>
+        <mesh filename="objects/lower_leg_visual.obj"/>
       </geometry>
       <material name="lower_leg_material">
         <color rgba="0.49805154997170436593 0.49807210711408739234 0.49808444139951718599 1.0"/>
@@ -105,7 +105,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_collision.obj"/>
+        <mesh filename="objects/lower_leg_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -119,7 +119,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_visual.obj"/>
+        <mesh filename="objects/foot_visual.obj"/>
       </geometry>
       <material name="foot_material">
         <color rgba="0.76296916064842934535 0.86340935426862419622 0.92367347044074110674 1.0"/>
@@ -128,7 +128,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_collision.obj"/>
+        <mesh filename="objects/foot_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -187,7 +187,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_2_visual.obj"/>
+        <mesh filename="objects/hip_pitch_2_visual.obj"/>
       </geometry>
       <material name="hip_pitch_2_material">
         <color rgba="0.73185158112174653056 0.81392767005015786985 0.8604379901161185451 1.0"/>
@@ -196,7 +196,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_pitch_2_collision.obj"/>
+        <mesh filename="objects/hip_pitch_2_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -210,7 +210,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_2_visual.obj"/>
+        <mesh filename="objects/hip_roll_2_visual.obj"/>
       </geometry>
       <material name="hip_roll_2_material">
         <color rgba="0.68639636760624267442 0.80885216598202025473 0.91513154554738251889 1.0"/>
@@ -219,7 +219,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/hip_roll_2_collision.obj"/>
+        <mesh filename="objects/hip_roll_2_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -233,7 +233,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_2_visual.obj"/>
+        <mesh filename="objects/upper_leg_2_visual.obj"/>
       </geometry>
       <material name="upper_leg_2_material">
         <color rgba="0.8509746851951229818 0.74215485188645069492 0.56968403348327723013 1.0"/>
@@ -242,7 +242,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/upper_leg_2_collision.obj"/>
+        <mesh filename="objects/upper_leg_2_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -256,7 +256,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_2_visual.obj"/>
+        <mesh filename="objects/lower_leg_2_visual.obj"/>
       </geometry>
       <material name="lower_leg_2_material">
         <color rgba="0.49805154997170436593 0.49807210711408739234 0.49808444139951718599 1.0"/>
@@ -265,7 +265,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/lower_leg_2_collision.obj"/>
+        <mesh filename="objects/lower_leg_2_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
@@ -279,7 +279,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_2_visual.obj"/>
+        <mesh filename="objects/foot_2_visual.obj"/>
       </geometry>
       <material name="foot_2_material">
         <color rgba="0.76296916064842934535 0.86340935426862419622 0.92367347044074110674 1.0"/>
@@ -288,7 +288,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0" />
       <geometry>
-        <mesh filename="file:///home/sankaet/drake_projects/sunny/objects/foot_2_collision.obj"/>
+        <mesh filename="objects/foot_2_collision.obj"/>
       </geometry>
     </collision>
     <inertial>
