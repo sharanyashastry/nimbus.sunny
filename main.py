@@ -23,6 +23,7 @@ from balance_controller import BalanceController
 from com_calculator import COMCalculator
 from ground_reaction_model import add_ground
 from swing_foot_trajectory_generator import swing_foot_traj_generator
+from swing_foot_trajectory_generator import fsm_state
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -35,6 +36,7 @@ def print_model_info(plant):
     print(f"Number of actuators: {plant.num_actuators()}")
     print(f"Number of frames: {plant.num_frames()}")
 
+
 def create_initial_pose_trajectory(initial_height, duration):
     times = [0., duration]
     poses = np.array([
@@ -43,12 +45,40 @@ def create_initial_pose_trajectory(initial_height, duration):
     ]).T
     return PiecewisePolynomial.FirstOrderHold(times, poses)
 
+def plot_swing_foot_traj(swing_foot_traj):
+    '''This function takes in the bezier curve and plots it in the world frames
+        using matplotlib.'''
+    curve_points = []
+
+    # Loop over t values and evaluate the Bézier curve at each t
+    t_values = np.linspace(0, 1, 100)
+    for i in t_values:
+        point = swing_foot_traj.value(i).flatten()  # Flatten to make it 1D
+        curve_points.append(point)
+
+    # # Convert the list to a numpy array
+    curve_points = np.array(curve_points)
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot(curve_points[:, 0], curve_points[:, 1], curve_points[:, 2], label="Swing Foot Trajectory")
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.legend()
+    ax.grid(True)
+    ax.set_title("Swing Foot Trajectory (3D Bézier Curve)")
+
+    plt.show()
+
+    return
+
+
 def main():
 
     # meshcat_utils = MeshcatUtils(port=7000)
     # meshcat = meshcat_utils.meshcat
     meshcat = StartMeshcat()
-# 
+#
     builder = DiagramBuilder()
     plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0)  # Continuous model
 
@@ -70,14 +100,24 @@ def main():
     context = simulator.get_mutable_context()
     plant_context = plant.GetMyContextFromRoot(context)
 
-    gait_planner = GaitPlanner(step_duration=2.0)  # Slower gait for stability
+    # gait_planner = GaitPlanner(step_duration=5.0)  # Slower gait for stability
+    # initializing with right foot.
     isLeftFoot = False
+    phase = 0
+    step_duration = 10
+
+    # initializing swing foot by calling the fsm_state function. This should
+    # return phase = 0 and isLeftFoot = False.
+    phase, isLeftFoot = fsm_state(phase, step_duration, isLeftFoot)
     ik_solver = GlobalIK(plant, plant_context, isLeftFoot)
-    balance_controller = BalanceController(Kp=0.5, Kd=0.1, max_correction=0.005)  # Further reduced gains
-    com_calculator = COMCalculator(plant)
+    fixed_foot_orientation_left = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))).rotation()
+    fixed_foot_orientation_right = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))).rotation()
+
+    # balance_controller = BalanceController(Kp=0.5, Kd=0.1, max_correction=0.005)  # Further reduced gains
+    # com_calculator = COMCalculator(plant)
 
     # Create initial pose trajectory
-    initial_height = 0.9  # Increased initial height
+    initial_height = 0.9  #Start robot on the ground
     initial_pose_trajectory = create_initial_pose_trajectory(initial_height, duration=2.0)
 
     simulator.set_target_realtime_rate(0.25)
@@ -85,12 +125,11 @@ def main():
 
     # Set initial joint positions
     q0 = plant.GetPositions(plant_context)
+    # print(plant.GetPositionNames())
     # Adjust these values based on your robot's joint configuration
-    # q0[7:12] = [-0.25, 0, 0, -0.65, 0.4]  # Left leg
     q0[7:12] = [-0.25, 0, 0, -0.65, 0.4]  # Left leg
     q0[12:] = [0.25, 0, 0, -0.65, 0.4]  # Right leg
     plant.SetPositions(plant_context, q0)
-    print("this is num positions after init ", q0)
 
     # Gradual initial pose setting
     pelvis = plant.GetBodyByName("pelvis")
@@ -105,8 +144,8 @@ def main():
     X_WP = RigidTransform(R, position)
     # print("this is X_WP ", X_WP)
     plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
-    X_WB_right = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
-    print("This is where the right foot is = ", X_WB_right)
+    # X_WB_right = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
+    # print("This is where the right foot is = ", X_WB_right)
 
     # Draw diagram
     DrawAndSaveDiagram(diagram)
@@ -115,9 +154,9 @@ def main():
     simulation_time = 1.5  # Total simulation time including initial pose
     meshcat.StartRecording()
 
-    # temp parameter to track the curve traversal time
-    curve_time = 0
-    curve_dt = 0.01
+    # temp parameter to track the curve traversal time. This might need to change
+    # based on motion smoothness.
+    curve_dt = 1/step_duration
     while context.get_time() < simulation_time:
         t = context.get_time()
         print(t)
@@ -125,48 +164,38 @@ def main():
         # @sharanya look into why there is a -2.0 here.why are we shifting this
         # to the right in time by 2?
         # left_foot, right_foot = gait_planner.get_foot_positions(t - 2.0)
+        phase, isLeftFoot = fsm_state(phase, step_duration, isLeftFoot)
+        if isLeftFoot:
+            X_WB = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
+            target = RigidTransform(RotationMatrix(), [0, 0, 0])
+            target.set_rotation(fixed_foot_orientation_left)
+            target.set_translation(X_WB.translation() + np.array([0.20, 0, 0]))
+        else:
+            X_WB = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
+            target = RigidTransform(RotationMatrix(), [0, 0, 0])
+            target.set_rotation(fixed_foot_orientation_right)
+            target.set_translation(X_WB.translation() + np.array([0.20, 0, 0]))
 
-        X_WB_right = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
-        target = RigidTransform(RotationMatrix(), [0, 0, 0])
-        target.set_rotation(X_WB_right.rotation())
-        target.set_translation(X_WB_right.translation() + np.array([0.20, 0, 0]))
-        swing_foot_traj = swing_foot_traj_generator(current_footstep = X_WB_right,target_footstep=target, clearance=0.20)
 
-        # curve_points = []
-
-        # Loop over t values and evaluate the Bézier curve at each t
-        # t_values = np.linspace(0, 1, 100)
-        # for i in t_values:
-        #     point = swing_foot_traj.value(i).flatten()  # Flatten to make it 1D
-        #     curve_points.append(point)
-
-        # # Convert the list to a numpy array
-        # curve_points = np.array(curve_points)
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111, projection='3d')
-        # ax.plot(curve_points[:, 0], curve_points[:, 1], curve_points[:, 2], label="Swing Foot Trajectory")
-        # ax.set_xlabel('X')
-        # ax.set_ylabel('Y')
-        # ax.set_zlabel('Z')
-        # ax.legend()
-        # ax.grid(True)
-        # ax.set_title("Swing Foot Trajectory (3D Bézier Curve)")
-
-        # plt.show()
+        swing_foot_traj = swing_foot_traj_generator(current_footstep = X_WB, target_footstep=target, clearance=0.20)
+        # plot for debugging
+        # plot_swing_foot_traj(swing_foot_traj)
         # pdb.set_trace()
+
         # # print(X_WB_right)
         # print("This is where the right foot is = ", X_WB_right.rpy())
-        X_WB_left = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
+        # X_WB_left = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
         ik_target = RigidTransform(RotationMatrix(), [0, 0, 0])
-        ik_target.set_rotation(X_WB_right.rotation())
-        ik_target.set_translation(swing_foot_traj.value(curve_time*curve_dt))
-        right_leg_sol = ik_solver.joint_position_command_generator(ik_target)
-        plant.SetPositions(plant_context, right_leg_sol)
-        curve_time += 1
-      
+        # @sharanya Maybe this should set this to a fixed orientation equal to the initial orientation instead?
+        ik_target.set_rotation(X_WB.rotation())
+        ik_target.set_translation(swing_foot_traj.value(phase))
+        q_sol = ik_solver.joint_position_command_generator(ik_target)
+        plant.SetPositions(plant_context, q_sol)
+        phase += curve_dt
+
         # pdb.set_trace()
 
-        
+
 
 
         # print("This is where the left foot is = ", X_WB_left.translation())

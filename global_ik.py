@@ -1,8 +1,8 @@
 from pydrake.multibody.inverse_kinematics import GlobalInverseKinematics
 import numpy as np
 from pydrake.solvers import Solve
-import gurobipy
-# from pydrake.solvers import 
+# import gurobipy
+# from pydrake.solvers import
 from pydrake.solvers import MosekSolver
 
 class GlobalIK:
@@ -23,7 +23,7 @@ class GlobalIK:
             foot_body_index = self.plant.GetBodyByName("foot_2").index()
             X_WB = self.plant.EvalBodyPoseInWorld(self.plant_context, self.plant.GetBodyByName("foot_2"))
 
-        
+
 
         # Set up mathematical program
         # TODO: Constraint needs to be fixed.
@@ -33,21 +33,27 @@ class GlobalIK:
                                                     X_WF = footstep_pose,
                                                     box_lb_F = [0.01, 0.01, 0.01],
                                                     box_ub_F = [0.01, 0.01, 0.01])
-        
+
         pelvis_index = self.plant.GetBodyByName("pelvis").index()
         X_WP = self.plant.EvalBodyPoseInWorld(self.plant_context, self.plant.GetBodyByName("pelvis"))
+
+        # TODO: Can try to do better here by using similar principle to inverted pendulum dynamics
+        # or simply a bounding box centered at halfway distancy in x-y plane and z set at 0.9
         self.global_ik_solver.AddWorldPositionConstraint(body_index = pelvis_index,
                                                     p_BQ = np.array([0,0,0]),
                                                     X_WF = X_WP,
-                                                    box_lb_F = [1, 1, 0.05],
-                                                    box_ub_F = [1, 1, 0.05])
-        
+                                                    box_lb_F = [10, 10, 0.05],
+                                                    box_ub_F = [10, 10, 0.05])
+
         # get pelvis pose in world as quaternion because the orientation constraint is in quaternion.
+        # TODO: Use a fixed orientaion for this.
         quat_wxyz = X_WP.rotation().ToQuaternion()
         self.global_ik_solver.AddWorldOrientationConstraint(body_index = pelvis_index,
                                                     desired_orientation = quat_wxyz,
                                                     angle_tol = 0.2)
-        
+
+        # TODO: Add switching logic here as well and add stance foot constraint.
+
         prog = self.global_ik_solver.get_mutable_prog()
         # gurobi_solver = GurobiSolver()
         mosek_solver = MosekSolver()

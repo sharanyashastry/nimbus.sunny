@@ -2,6 +2,15 @@ import numpy as np
 from pydrake.trajectories import BezierCurve
 import pdb
 
+
+def fsm_state(phase, T, isLeftFoot):
+    # T is the step_duration parameter and phase represents what point along the
+    # step you are in time.
+    if phase >= T:
+        isLeftFoot = not isLeftFoot
+        phase = 0
+    return phase, isLeftFoot
+
 def swing_foot_traj_generator(current_footstep, target_footstep, clearance):
     ''' This function generates a pose trajectory for the swing foot to track.
         It takes in the pose of the current and target footsteps as expressed in
