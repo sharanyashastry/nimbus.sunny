@@ -17,19 +17,19 @@ def swing_foot_traj_generator(current_footstep, target_footstep, clearance):
         the world frame and returns a trajectory.'''
     current_footstep_position = np.array(current_footstep.translation())
     target_footstep_position = np.array(target_footstep.translation())
-    print("current footstep position ", current_footstep_position)
-    print("target footstep position ", target_footstep_position)
+    # print("current footstep position ", current_footstep_position)
+    # print("target footstep position ", target_footstep_position)
     # xyz locations of footstep. This is currently only generating way points for moving in the y direction.
     p1 = current_footstep_position + 0.25*(target_footstep_position - current_footstep_position)
     p2 = current_footstep_position + 0.75*(target_footstep_position - current_footstep_position)
 
     # clearance in the z direction.
-    p1[2] = clearance
-    p2[2] = clearance
+    p1[2] = current_footstep_position[2] + clearance
+    p2[2] = current_footstep_position[2] + clearance
 
     control_points = np.array([current_footstep_position, p1, p2, target_footstep_position]).T
-    print("control points ", control_points.shape)
-    print("control points ", control_points)
+    # print("control points ", control_points.shape)
+    # print("control points ", control_points)
 
     # instantiate a bezier curve that interpolates the position between them. This is in the s parameter space.
     swing_foot_traj = BezierCurve(start_time = 0, end_time = 1, control_points = control_points)

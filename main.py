@@ -100,19 +100,6 @@ def main():
     context = simulator.get_mutable_context()
     plant_context = plant.GetMyContextFromRoot(context)
 
-    # gait_planner = GaitPlanner(step_duration=5.0)  # Slower gait for stability
-    # initializing with right foot.
-    isLeftFoot = False
-    phase = 0
-    step_duration = 10
-
-    # initializing swing foot by calling the fsm_state function. This should
-    # return phase = 0 and isLeftFoot = False.
-    phase, isLeftFoot = fsm_state(phase, step_duration, isLeftFoot)
-    ik_solver = GlobalIK(plant, plant_context, isLeftFoot)
-    fixed_foot_orientation_left = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))).rotation()
-    fixed_foot_orientation_right = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))).rotation()
-
     # balance_controller = BalanceController(Kp=0.5, Kd=0.1, max_correction=0.005)  # Further reduced gains
     # com_calculator = COMCalculator(plant)
 
@@ -120,12 +107,9 @@ def main():
     initial_height = 0.9  #Start robot on the ground
     initial_pose_trajectory = create_initial_pose_trajectory(initial_height, duration=2.0)
 
-    simulator.set_target_realtime_rate(0.25)
-    simulator.Initialize()
-
     # Set initial joint positions
     q0 = plant.GetPositions(plant_context)
-    # print(plant.GetPositionNames())
+    print(plant.GetPositionNames())
     # Adjust these values based on your robot's joint configuration
     q0[7:12] = [-0.25, 0, 0, -0.65, 0.4]  # Left leg
     q0[12:] = [0.25, 0, 0, -0.65, 0.4]  # Right leg
@@ -134,24 +118,48 @@ def main():
     # Gradual initial pose setting
     pelvis = plant.GetBodyByName("pelvis")
     t = 0
-    dt = 0.01
+    dt = 0.001
     pose = initial_pose_trajectory.value(t)
     position = pose[:3].flatten()  # Flatten to ensure it's a 1D array
     quat_wxyz = pose[3:].flatten()  # Flatten and reorder for Quaternion constructor
     quaternion = Quaternion(quat_wxyz[0], quat_wxyz[1], quat_wxyz[2], \
                             quat_wxyz[3])
+    # print("quaternion ", quaternion)
     R = RotationMatrix(quaternion)
     X_WP = RigidTransform(R, position)
     # print("this is X_WP ", X_WP)
     plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
+
+    simulator.set_target_realtime_rate(0.1)
+    simulator.Initialize()
     # X_WB_right = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
     # print("This is where the right foot is = ", X_WB_right)
+
+    # gait_planner = GaitPlanner(step_duration=5.0)  # Slower gait for stability
+    # initializing with right foot.
+    isLeftFoot = False
+    phase = 0
+    step_duration = 5
+
+    # initializing swing foot by calling the fsm_state function. This should
+    # return phase = 0 and isLeftFoot = False.
+    phase, isLeftFoot = fsm_state(phase, step_duration, isLeftFoot)
+    ik_solver = GlobalIK(plant, plant_context)
+    ik_solver.set_body_position_costs([100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    ik_solver.set_body_orientation_costs([100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    fixed_foot_orientation_left = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))).rotation()
+    fixed_foot_orientation_right = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))).rotation()
+    # @sharanya there's something slightly fishy about the y values for the feet, they're not symmetric for some reason.
+    # TODO: Look into this later.
+    print("left foot position ", plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2")).translation())
+    print("right foot position ", plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot")).translation())
+    # pdb.set_trace()
 
     # Draw diagram
     DrawAndSaveDiagram(diagram)
 
     # # Main simulation loop
-    simulation_time = 1.5  # Total simulation time including initial pose
+    simulation_time = 100  # Total simulation time including initial pose
     meshcat.StartRecording()
 
     # temp parameter to track the curve traversal time. This might need to change
@@ -164,20 +172,29 @@ def main():
         # @sharanya look into why there is a -2.0 here.why are we shifting this
         # to the right in time by 2?
         # left_foot, right_foot = gait_planner.get_foot_positions(t - 2.0)
+
+        # Check if the swing foot has changed. If it has, update the phase and
+        # fsm state.
+        prev_swing_foot = isLeftFoot
         phase, isLeftFoot = fsm_state(phase, step_duration, isLeftFoot)
-        if isLeftFoot:
-            X_WB = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
-            target = RigidTransform(RotationMatrix(), [0, 0, 0])
-            target.set_rotation(fixed_foot_orientation_left)
-            target.set_translation(X_WB.translation() + np.array([0.20, 0, 0]))
-        else:
-            X_WB = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
-            target = RigidTransform(RotationMatrix(), [0, 0, 0])
-            target.set_rotation(fixed_foot_orientation_right)
-            target.set_translation(X_WB.translation() + np.array([0.20, 0, 0]))
 
+        # Plan new swing foot trajectory only if the swing foot has changed.
+        # else, query the current trajectory for the current phase.
+        if isLeftFoot != prev_swing_foot or context.get_time() == 0:
+            if isLeftFoot:
+                X_WB = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
+                target = RigidTransform(RotationMatrix(), [0, 0, 0])
+                target.set_rotation(fixed_foot_orientation_left)
+                target.set_translation(X_WB.translation() + np.array([0.25, 0, 0]))
+            else:
+                X_WB = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
+                target = RigidTransform(RotationMatrix(), [0, 0, 0])
+                target.set_rotation(fixed_foot_orientation_right)
+                target.set_translation(X_WB.translation() + np.array([0.25, 0, 0]))
+            
+            swing_foot_traj = swing_foot_traj_generator(current_footstep = X_WB, target_footstep=target, clearance=0.07)
 
-        swing_foot_traj = swing_foot_traj_generator(current_footstep = X_WB, target_footstep=target, clearance=0.20)
+        
         # plot for debugging
         # plot_swing_foot_traj(swing_foot_traj)
         # pdb.set_trace()
@@ -185,13 +202,21 @@ def main():
         # # print(X_WB_right)
         # print("This is where the right foot is = ", X_WB_right.rpy())
         # X_WB_left = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
+        print("current phase ", phase)
+        print("Current pelvis pose ", plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("pelvis")))
+        print("current swing foot pose ", X_WB)
         ik_target = RigidTransform(RotationMatrix(), [0, 0, 0])
-        # @sharanya Maybe this should set this to a fixed orientation equal to the initial orientation instead?
-        ik_target.set_rotation(X_WB.rotation())
-        ik_target.set_translation(swing_foot_traj.value(phase))
-        q_sol = ik_solver.joint_position_command_generator(ik_target)
+        # @sharanya TODO: Maybe this should set this to a fixed orientation equal to the initial orientation instead?
+        # The orientation of the foot is currently not aligned with the world frame. The constraints are in the 
+        # world frame. This might be the issue. 
+        ik_target.set_rotation(Quaternion(1, 0, 0, 0))
+        ik_target.set_translation(X_WB.translation() + np.array([0, 0, 0.01]))
+        # ik_target.set_translation(swing_foot_traj.value(phase))
+        print("ik target ", ik_target.translation())
+        q_sol = ik_solver.joint_position_command_generator(ik_target, isLeftFoot)
+        pdb.set_trace()
         plant.SetPositions(plant_context, q_sol)
-        phase += curve_dt
+        phase += dt
 
         # pdb.set_trace()
 

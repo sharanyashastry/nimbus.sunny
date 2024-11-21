@@ -40,7 +40,7 @@ class MeshcatUtils:
         self.meshcat_url = None  # Initialize to store the Meshcat URL
         self._start_or_restart_meshcat()
 
-    def _kill_python_process_on_port(self, port):
+    def _kill_python_process_on_port(port):
         """Kill the Python process on the specified port."""
         try:
             # Find the Python process on the given port and kill it
@@ -90,3 +90,8 @@ class MeshcatUtils:
     def get_meshcat_url(self):
         """Return the URL of the running Meshcat instance."""
         return self.meshcat_url
+
+
+if __name__ == '__main__':
+    for i in range(30):
+        MeshcatUtils._kill_python_process_on_port(7000 + i)
