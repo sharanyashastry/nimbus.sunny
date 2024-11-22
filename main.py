@@ -191,10 +191,10 @@ def main():
                 target = RigidTransform(RotationMatrix(), [0, 0, 0])
                 target.set_rotation(fixed_foot_orientation_right)
                 target.set_translation(X_WB.translation() + np.array([0.25, 0, 0]))
-            
+
             swing_foot_traj = swing_foot_traj_generator(current_footstep = X_WB, target_footstep=target, clearance=0.07)
 
-        
+
         # plot for debugging
         # plot_swing_foot_traj(swing_foot_traj)
         # pdb.set_trace()
@@ -205,14 +205,15 @@ def main():
         print("current phase ", phase)
         print("Current pelvis pose ", plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("pelvis")))
         print("current swing foot pose ", X_WB)
-        ik_target = RigidTransform(RotationMatrix(), [0, 0, 0])
+        ik_target = RigidTransform()
+        print("ik target before setting ", ik_target)
         # @sharanya TODO: Maybe this should set this to a fixed orientation equal to the initial orientation instead?
-        # The orientation of the foot is currently not aligned with the world frame. The constraints are in the 
-        # world frame. This might be the issue. 
-        ik_target.set_rotation(Quaternion(1, 0, 0, 0))
-        ik_target.set_translation(X_WB.translation() + np.array([0, 0, 0.01]))
+        # The orientation of the foot is currently not aligned with the world frame. The constraints are in the
+        # world frame. This might be the issue.
+        # set the translation to be some z height higher.
+        ik_target.set_translation(X_WB.translation() + np.array([0, 0, 0.10]))
         # ik_target.set_translation(swing_foot_traj.value(phase))
-        print("ik target ", ik_target.translation())
+        print("ik target final ", ik_target)
         q_sol = ik_solver.joint_position_command_generator(ik_target, isLeftFoot)
         pdb.set_trace()
         plant.SetPositions(plant_context, q_sol)
