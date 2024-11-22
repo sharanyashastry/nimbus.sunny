@@ -93,5 +93,5 @@ class MeshcatUtils:
 
 
 if __name__ == '__main__':
-    for i in range(30):
+    for i in range(100):
         MeshcatUtils._kill_python_process_on_port(7000 + i)

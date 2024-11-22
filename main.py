@@ -24,6 +24,7 @@ from com_calculator import COMCalculator
 from ground_reaction_model import add_ground
 from swing_foot_trajectory_generator import swing_foot_traj_generator
 from swing_foot_trajectory_generator import fsm_state
+from drake_ik import IK
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -130,7 +131,7 @@ def main():
     # print("this is X_WP ", X_WP)
     plant.SetFreeBodyPose(plant_context, pelvis, X_WP)
 
-    simulator.set_target_realtime_rate(0.1)
+    simulator.set_target_realtime_rate(1)
     simulator.Initialize()
     # X_WB_right = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))
     # print("This is where the right foot is = ", X_WB_right)
@@ -144,9 +145,7 @@ def main():
     # initializing swing foot by calling the fsm_state function. This should
     # return phase = 0 and isLeftFoot = False.
     phase, isLeftFoot = fsm_state(phase, step_duration, isLeftFoot)
-    ik_solver = GlobalIK(plant, plant_context)
-    ik_solver.set_body_position_costs([100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    ik_solver.set_body_orientation_costs([100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+    ik_solver = IK(plant, plant_context)
     fixed_foot_orientation_left = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))).rotation()
     fixed_foot_orientation_right = (plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot"))).rotation()
     # @sharanya there's something slightly fishy about the y values for the feet, they're not symmetric for some reason.
@@ -202,21 +201,21 @@ def main():
         # # print(X_WB_right)
         # print("This is where the right foot is = ", X_WB_right.rpy())
         # X_WB_left = plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("foot_2"))
-        print("current phase ", phase)
-        print("Current pelvis pose ", plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("pelvis")))
-        print("current swing foot pose ", X_WB)
+
+        # print("current phase ", phase)
+        # print("Current pelvis pose ", plant.EvalBodyPoseInWorld(plant_context, plant.GetBodyByName("pelvis")))
+        # print("current swing foot pose ", X_WB)
         ik_target = RigidTransform()
-        print("ik target before setting ", ik_target)
-        # @sharanya TODO: Maybe this should set this to a fixed orientation equal to the initial orientation instead?
-        # The orientation of the foot is currently not aligned with the world frame. The constraints are in the
-        # world frame. This might be the issue.
-        # set the translation to be some z height higher.
-        ik_target.set_translation(X_WB.translation() + np.array([0, 0, 0.10]))
-        # ik_target.set_translation(swing_foot_traj.value(phase))
-        print("ik target final ", ik_target)
+        # print("ik target before setting ", ik_target)
+        # # @sharanya TODO: Maybe this should set this to a fixed orientation equal to the initial orientation instead?
+        # # The orientation of the foot is currently not aligned with the world frame. The constraints are in the
+        # # world frame. This might be the issue.
+        # # set the translation to be some z height higher.
+        ik_target.set_translation(swing_foot_traj.value(phase))
+        # print("ik target final ", ik_target)
         q_sol = ik_solver.joint_position_command_generator(ik_target, isLeftFoot)
-        pdb.set_trace()
         plant.SetPositions(plant_context, q_sol)
+
         phase += dt
 
         # pdb.set_trace()
