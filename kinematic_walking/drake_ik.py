@@ -7,23 +7,18 @@ from pydrake.solvers import Solve
 # from pydrake.solvers import
 from pydrake.solvers import MosekSolver
 
-class IK:
+class IKSystem(LeafSystem):
     def __init__(self, plant, plant_context):
         self.ik_solver = InverseKinematics(plant)
         self.plant = plant
         self.plant_context = plant_context
+        self._world_frame = plant.world_frame()
         self.lock_hip_joints()
-        self.q_body_position_costs = np.zeros(plant.num_bodies())
-        self.q_body_orienation_costs = np.zeros(plant.num_bodies())
-        # self.grbmodel = gurobipy.Model(outputflag=0)
 
-    def set_body_position_costs(self, body_positions):
-        self.q_body_position_costs = body_positions
-        return
+        # Needs a constant vector sink for rotation velocity.
+        self.DeclareVectorInputPort("fsm_state_input : isLeftFoot, phase_input", 2)
+        self.DeclareVectorOutputPort("nimbus.velocity_command", 16, self.CalcOutput)
 
-    def set_body_orientation_costs(self, body_orientations):
-        self.q_body_orienation_costs = body_orientations
-        return
 
     def lock_hip_joints(self):
         # Lock the hip joints
@@ -106,3 +101,5 @@ class IK:
         solution = result.GetSolution()
         # print("solution ", solution)
         return solution
+    
+
