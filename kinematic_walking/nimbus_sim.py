@@ -13,6 +13,7 @@ from pydrake.math import RigidTransform, RollPitchYaw, RotationMatrix
 from pydrake.trajectories import PiecewisePolynomial
 from pydrake.common.eigen_geometry import Quaternion
 from pydrake.all import Integrator, ConstantVectorSource
+from pydrake.multibody.tree import PdControllerGains
 
 from ground_reaction_model import add_ground
 from swing_foot_trajectory_generator_system import SwingFootTrajectoryGeneratorSystem
@@ -52,6 +53,26 @@ def main():
     parser = Parser(plant)
     parser.AddModelsFromUrl(robot_url)
 
+    # Add actuators to each joint    
+    joint_names = [
+        "R_ankle", "R_knee", "R_hip_yaw", "R_hip_roll", "R_hip_pitch",
+        "L_ankle", "L_knee", "L_hip_yaw", "L_hip_roll", "L_hip_pitch"
+    ]
+    
+    for joint_name in joint_names:
+        try:
+            joint = plant.GetJointByName(joint_name)
+            actuator = plant.AddJointActuator(name=f"{joint_name}_actuator", joint=joint)
+            # Pd = PdControllerGains()
+            # Pd.p = 100.0
+            # Pd.d = 10.0
+            # actuator.set_controller_gains(Pd)
+            print(f"Added actuator: {actuator.name()} for joint: {joint.name()}")
+        except RuntimeError as e:
+            print(f"Error adding actuator for joint {joint_name}: {e}")
+
+    # pdb.set_trace()
+
     add_ground(plant, soft_contact=True)  # Implement soft contact in add_ground function
     plant.Finalize()
     plant_context = plant.CreateDefaultContext()
@@ -88,14 +109,17 @@ def main():
     
     integrator = builder.AddSystem(Integrator(17))
     # set update the sim plant positions to the controller output
+    builder.Connect(plant.get_state_output_port(), position_setter.get_input_port(0))
     builder.Connect(controller.get_output_port(0), \
                     integrator.get_input_port(0))
     builder.Connect(integrator.get_output_port(0), \
-                    position_setter.get_input_port(0))
+                    position_setter.get_input_port(1))
+    
+    builder.Connect(position_setter.get_output_port(0), plant.get_actuation_input_port())
     
     diagram = builder.Build()
     diagram.set_name("Foundation_bot_system_diagram")
-    DrawAndSaveDiagram(diagram)
+    DrawAndSaveDiagram(diagram, "Foundation_bot_system_diagram")
 
     simulator = Simulator(diagram)
     simulator.set_target_realtime_rate(1)

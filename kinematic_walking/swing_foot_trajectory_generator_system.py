@@ -11,7 +11,7 @@ class SwingFootTrajectoryGeneratorSystem(LeafSystem):
         self._plant_context = plant_context
         self._world_frame = plant.world_frame()
         self.clearance = 0.07
-        self.step_duration = 12
+        self.step_duration = 1
 
         self.DeclareVectorInputPort("fsm_state_input : isLeftFoot, phase_input", 2)
         # should be 17 + 16 for nimbus
@@ -71,10 +71,12 @@ class SwingFootTrajectoryGeneratorSystem(LeafSystem):
             self._prev_fsm_state = fsm_state
         
         curr_phase = self.get_input_port(0).Eval(context)[1]
+        # print("Current phase ", curr_phase)
         s = curr_phase/self.step_duration
 
         angular_velocity = self.get_input_port(1).Eval(context)
         linear_velocity = self._swing_foot_traj_velocity.value(s)
+        # print("linear velocity ", linear_velocity)
         target_velocity = np.zeros(6)
         target_velocity[:3] = angular_velocity
         target_velocity[3:] = linear_velocity.flatten()

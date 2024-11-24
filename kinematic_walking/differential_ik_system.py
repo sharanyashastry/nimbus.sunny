@@ -37,8 +37,10 @@ class DifferentialIKSystem(LeafSystem):
         self._plant.SetPositions(self._plant_context, q_now)
         if(fsm_state == 1):
             # This is the right foot
+            print("Right foot in IK")
             sw_foot_body = self._plant.GetBodyByName("foot")
         else:
+            print("Left foot in IK")
             sw_foot_body = self._plant.GetBodyByName("foot_2")
 
 
@@ -47,6 +49,7 @@ class DifferentialIKSystem(LeafSystem):
         J_sw = self._plant.CalcJacobianSpatialVelocity(
             self._plant_context, JacobianWrtVariable.kQDot, 
             sw_foot_frame, [0, 0, 0], self._world_frame, self._world_frame)
+        print("J_sw ", J_sw)
         
         # This is just representing the swingfoot body frame wrt world frame.
         X_WB = self._plant.CalcRelativeTransform(
@@ -56,7 +59,7 @@ class DifferentialIKSystem(LeafSystem):
         qdot_next = self.DiffIKQP(q_now, qdot_now, 
                                       sw_foot_velocity_desired, 
                                       foot_position_in_world, J_sw)
-        print("qdot_next ", qdot_next)
+        # print("qdot_next ", qdot_next)
         output.SetFromVector(qdot_next)
         
     def DiffIKQP(self, q_now, qdot_now, sw_foot_velocity_desired, foot_position_in_world, J_sw):
@@ -64,7 +67,7 @@ class DifferentialIKSystem(LeafSystem):
         prog = MathematicalProgram()
         qdot = prog.NewContinuousVariables(17, "qdot")
         # TODO: Set this to max joint velocities as in urdf.
-        v_max = 3
+        v_max = 10
 
         for i in range(16):
             prog.AddBoundingBoxConstraint(-v_max, v_max, qdot[i])

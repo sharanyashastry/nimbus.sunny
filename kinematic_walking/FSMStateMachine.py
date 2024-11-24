@@ -11,7 +11,7 @@ class FsmStateMachine(LeafSystem):
         self._plant = plant
         self._plant_context = plant_context
         self._world_frame = plant.world_frame()
-        self.step_duration = 12
+        self.step_duration = 1
         self.epsilon = 1e-6
         self.sim_dt = 0.001
 
