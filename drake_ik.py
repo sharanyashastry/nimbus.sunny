@@ -45,7 +45,7 @@ class IK:
 
     def joint_position_command_generator(self, footstep_pose, isLeftFoot):
         # Lock the hip joints
-        self.lock_hip_joints()
+        # self.lock_hip_joints()
 
         # get the foot body index based on swing_foot
         if(not isLeftFoot):
@@ -87,6 +87,10 @@ class IK:
         self.ik_solver.AddPositionConstraint(st_foot_frame, np.array([0, 0, 0]), 
                                              world_frame, X_WS.translation(), 
                                              X_WS.translation())
+        # Should the X_WS instead be identity?
+        # self.ik_solver.AddOrientationConstraint(st_foot_frame, RigidTransform().rotation(), 
+        #                                         world_frame, X_WS.rotation(), 
+        #                                         0)
         # This second constraint is meant to enforce a planar geometric contact constraint.
         # self.ik_solver.AddPositionConstraint(st_foot_frame, X_WS.translation() + np.array([-0.04, 0, 0]),
         #                                      world_frame, X_WS.translation() + np.array([0.04, 0, 0]),
@@ -100,4 +104,5 @@ class IK:
         # prog = self.ik_solver.get_mutable_prog()
         result = Solve(self.ik_solver.prog())
         solution = result.GetSolution()
+        # print("solution ", solution)
         return solution

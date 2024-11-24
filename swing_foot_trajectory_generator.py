@@ -3,12 +3,14 @@ from pydrake.trajectories import BezierCurve
 import pdb
 
 
-def fsm_state(phase, T, isLeftFoot):
+def fsm_state(phase, T, isLeftFoot, epsilon = 1e-6):
     # T is the step_duration parameter and phase represents what point along the
     # step you are in time.
-    if phase >= T:
+    print("Phase and duration", phase, T)
+    if phase >= T - epsilon:
         isLeftFoot = not isLeftFoot
         phase = 0
+        print("Switching feet")
     return phase, isLeftFoot
 
 def swing_foot_traj_generator(current_footstep, target_footstep, clearance):

@@ -7,6 +7,7 @@ from util import MeshcatUtils
 from pydrake.common import FindResourceOrThrow
 from pydrake.geometry import StartMeshcat
 from pydrake.geometry import Meshcat
+from pydrake.geometry import Rgba
 from pydrake.multibody.parsing import Parser
 from pydrake.multibody.plant import AddMultibodyPlantSceneGraph
 from pydrake.systems.analysis import Simulator
@@ -15,6 +16,7 @@ from pydrake.visualization import AddDefaultVisualization
 from pydrake.math import RigidTransform, RollPitchYaw, RotationMatrix
 from pydrake.trajectories import PiecewisePolynomial
 from pydrake.common.eigen_geometry import Quaternion
+from pydrake.all import Integrator
 
 from gait_planner import GaitPlanner
 from inverse_kinematics import InverseKinematicsSolver
@@ -73,13 +75,52 @@ def plot_swing_foot_traj(swing_foot_traj):
 
     return
 
+def render_swing_foot_traj(swing_foot_traj, meshcat):
+    # Define trajectory points
+    trajectory_points = []
+    for tk in np.linspace(0, 1, num=100):  # 100 points along the trajectory
+        pos = np.array(swing_foot_traj.value(tk)).flatten()  # Ensure pos is flat
+        if pos.shape != (3,):
+            raise ValueError(f"Each queried position must have shape (3,), got {pos.shape}")
+        trajectory_points.append(pos)
+
+    # Convert points into numpy array with correct shape (3, n_points)
+    trajectory_points = np.array(trajectory_points).T  # Shape: (3, n_points)
+
+    # Check dimensions and ensure correctness
+    if trajectory_points.ndim != 2 or trajectory_points.shape[0] != 3:
+        raise ValueError(f"trajectory_points must have shape (3, n_points), got {trajectory_points.shape}")
+
+    # Create start and end points for line segments
+    start_points = trajectory_points[:, :-1]  # All but the last point
+    end_points = trajectory_points[:, 1:]    # All but the first point
+
+    # Ensure the arrays are Fortran-contiguous
+    start_points = np.asfortranarray(start_points)
+    end_points = np.asfortranarray(end_points)
+
+    # # Debugging prints (remove these once verified)
+    # print("Start points shape:", start_points.shape)
+    # print("End points shape:", end_points.shape)
+
+    # Publish trajectory as line segments in Meshcat
+    meshcat.SetLineSegments(
+        path="swing_foot_trajectory",
+        start=start_points,
+        end=end_points,
+        line_width=1.0,
+        rgba=Rgba(1, 0, 0, 1)  # Red color
+    )
+
+
+
 
 def main():
 
     # meshcat_utils = MeshcatUtils(port=7000)
     # meshcat = meshcat_utils.meshcat
     meshcat = StartMeshcat()
-#
+
     builder = DiagramBuilder()
     plant, scene_graph = AddMultibodyPlantSceneGraph(builder, time_step=0)  # Continuous model
 
@@ -111,9 +152,10 @@ def main():
     # Set initial joint positions
     q0 = plant.GetPositions(plant_context)
     print(plant.GetPositionNames())
+    print(plant.GetVelocityNames())
     # Adjust these values based on your robot's joint configuration
-    q0[7:12] = [-0.25, 0, 0, -0.65, 0.4]  # Left leg
-    q0[12:] = [0.25, 0, 0, -0.65, 0.4]  # Right leg
+    q0[7:12] = [-0.25, 0, 0, -0.65, 0.4]  # Right leg
+    q0[12:] = [0.25, 0, 0, -0.65, 0.4]  # Left leg
     plant.SetPositions(plant_context, q0)
 
     # Gradual initial pose setting
@@ -140,7 +182,7 @@ def main():
     # initializing with right foot.
     isLeftFoot = False
     phase = 0
-    step_duration = 5
+    step_duration = 12
 
     # initializing swing foot by calling the fsm_state function. This should
     # return phase = 0 and isLeftFoot = False.
@@ -192,6 +234,16 @@ def main():
                 target.set_translation(X_WB.translation() + np.array([0.25, 0, 0]))
 
             swing_foot_traj = swing_foot_traj_generator(current_footstep = X_WB, target_footstep=target, clearance=0.07)
+
+        render_swing_foot_traj(swing_foot_traj, meshcat)
+        task_space_velocity_trajectory = swing_foot_traj.MakeDerivative()
+        print("task space velocity at 0 ",task_space_velocity_trajectory.value(0))
+        print("task space velocity at 0.5 ",task_space_velocity_trajectory.value(0.5))
+        print("task space velocity at 1 ",task_space_velocity_trajectory.value(1))
+        # pdb.set_trace()
+        # print("derivative size ", task_space_velocity_trajectory)
+        # # integrator 
+        # integrator = Integrator(plant.num_positions(), plant.num_velocities(), dt)
 
 
         # plot for debugging
